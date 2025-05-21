@@ -10,7 +10,6 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class TaskSummarize implements Runnable {
@@ -21,6 +20,7 @@ public class TaskSummarize implements Runnable {
         this.path2Data = path2Data;
     }
 
+    @Override
     public void run() {
         try {
             var data = getDataAsList(path2Data);
@@ -32,10 +32,10 @@ public class TaskSummarize implements Runnable {
 
             this.result = new ClimateSummary(tempAvg, humidityAvg, windSpeedAvg, visibilityAvg, pressureAvg);
 
+
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-
     }
 
     //Read csv using Apache Commons CSV
@@ -60,10 +60,8 @@ public class TaskSummarize implements Runnable {
                 output.add(new ClimateRecord(temp, humidity, windSpeed, visibility, pressure));
             }
         }
-
         return output;
     }
-
 
     public ClimateSummary getResult() {
         return result;
