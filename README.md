@@ -12,3 +12,8 @@ Para solucionar el problema, es necesario invocar el método *join* luego de lla
 
 ## Actividad 2.
 Hasta el momento la única forma de obtener un resultado de la ejecución de un hilo es creando un atributo y un método get (revisar las líneas [17](src/main/java/ec/edu/utpl/carreras/computacion/s7/tasks/TaskSummarize.java#L17) y [66](src/main/java/ec/edu/utpl/carreras/computacion/s7/tasks/TaskSummarize.java#L66) de la clase [TaskSummarize.java](src/main/java/ec/edu/utpl/carreras/computacion/s7/tasks/TaskSummarize.java)). Si bien esto funciona, es posible preguntar: ¿existe alguna otra alternativa?
+
+**Respuesta**: si, es posible usar interfaces como Callable y Future, que son abstracciones que ayudan a obtener datos con información que genera el hilo,además, ExecutorService para la creación de un pool de hilos. Para ver su implementación en el prblema, debe revisar los archivos:
+
+- [TaskSummarize.java](src/main/java/ec/edu/utpl/carreras/computacion/s7/tasks/TaskSummarize.java), para ver el uso de la interfaz *Callable* y el método *call*.
+- [App.java](src/main/java/ec/edu/utpl/carreras/computacion/s7/App.java) para ver el uso de Future y ExecutorServices.

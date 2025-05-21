@@ -11,31 +11,25 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
-public class TaskSummarize implements Runnable {
+public class TaskSummarize implements Callable<ClimateSummary> {
     private final String path2Data;
-    private ClimateSummary result;
 
     public TaskSummarize(String path2Data) {
         this.path2Data = path2Data;
     }
 
     @Override
-    public void run() {
-        try {
-            var data = getDataAsList(path2Data);
-            var tempAvg = data.stream().mapToDouble(ClimateRecord::temp).average().orElse(0.0);
-            var humidityAvg = data.stream().mapToDouble(ClimateRecord::humidity).average().orElse(0.0);
-            var windSpeedAvg = data.stream().mapToDouble(ClimateRecord::windSpeed).average().orElse(0.0);
-            var visibilityAvg = data.stream().mapToDouble(ClimateRecord::visibility).average().orElse(0.0);
-            var pressureAvg =data.stream().mapToDouble(ClimateRecord::pressure).average().orElse(0.0);
+    public ClimateSummary call() throws IOException{
+        var data = getDataAsList(path2Data);
+        var tempAvg = data.stream().mapToDouble(ClimateRecord::temp).average().orElse(0.0);
+        var humidityAvg = data.stream().mapToDouble(ClimateRecord::humidity).average().orElse(0.0);
+        var windSpeedAvg = data.stream().mapToDouble(ClimateRecord::windSpeed).average().orElse(0.0);
+        var visibilityAvg = data.stream().mapToDouble(ClimateRecord::visibility).average().orElse(0.0);
+        var pressureAvg =data.stream().mapToDouble(ClimateRecord::pressure).average().orElse(0.0);
 
-            this.result = new ClimateSummary(tempAvg, humidityAvg, windSpeedAvg, visibilityAvg, pressureAvg);
-
-
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
+        return new ClimateSummary(tempAvg, humidityAvg, windSpeedAvg, visibilityAvg, pressureAvg);
     }
 
     //Read csv using Apache Commons CSV
@@ -61,9 +55,5 @@ public class TaskSummarize implements Runnable {
             }
         }
         return output;
-    }
-
-    public ClimateSummary getResult() {
-        return result;
     }
 }
